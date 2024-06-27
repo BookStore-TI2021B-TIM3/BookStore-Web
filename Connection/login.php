@@ -10,17 +10,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $data['email'];
         $password = $data['password'];
 
-        // Prepare and bind
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            // Check password
+           
             if ($password === $row['password']) {
-                echo json_encode(["status" => "success", "message" => "Login successful"]);
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Login successful",
+                    "user_id" => $row['id']
+                ]);
             } else {
                 echo json_encode(["status" => "error", "message" => "Invalid password"]);
             }
@@ -28,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode(["status" => "error", "message" => "Email not found"]);
         }
 
-        // Close statement
         $stmt->close();
     } else {
         echo json_encode(["status" => "error", "message" => "Email and password required"]);
@@ -37,6 +39,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo json_encode(["status" => "error", "message" => "Invalid request"]);
 }
 
-// Close connection
 $conn->close();
 ?>
