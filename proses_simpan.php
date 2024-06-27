@@ -1,5 +1,5 @@
 <?php
-// panggil file "database.php" untuk koneksi ke database
+// panggil file "db_connect.php" untuk koneksi ke database
 require_once "connection/db_connect.php";
 
 // mengecek data hasil submit dari form
@@ -20,7 +20,8 @@ if (isset($_POST['simpan'])) {
     // ambil data file hasil submit dari form
     $nama_file          = $_FILES['foto']['name'];
     $tmp_file           = $_FILES['foto']['tmp_name'];
-    $extension          = array_pop(explode(".", $nama_file));
+    $file_info          = pathinfo($nama_file);
+    $extension          = $file_info['extension'];
     // enkripsi nama file
     $nama_file_enkripsi = sha1(md5(time() . $nama_file)) . '.' . $extension;
     // tentukan direktori penyimpanan file
@@ -41,3 +42,4 @@ if (isset($_POST['simpan'])) {
         }
     }
 }
+?>

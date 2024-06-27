@@ -12,7 +12,7 @@ require_once "connection/db_connect.php";
     <!-- Meta tag yang diperlukan -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Aplikasi CRUD dengan PHP 8, MySQL 8, Bootstrap 5, dan Vanilla JS">
+    <meta name="description" content="Aplikasi CRUD ">
     <meta name="author" content="">
 
     <!-- Judul -->
@@ -130,42 +130,45 @@ require_once "connection/db_connect.php";
                 <button type="button">Search</button>
             </div>
 
-            <!-- Daftar Buku -->
-            <div class="book-list">
-                <?php
-                // Ambil data dari database
-                $query = "SELECT * FROM buku";
-                $result = mysqli_query($conn, $query);
-
-                if (!$result) {
-                    echo "Error: " . mysqli_error($conn);
-                } else {
-                    while ($data = mysqli_fetch_assoc($result)) {
-                        echo '
-                        <div class="book-item">
-                            <img src="assets/img/book_cover.png" alt="Book Cover">
-                            <div class="book-info">
-                                <h5>'.$data['judul'].'</h5>
-                                <p>'.$data['penulis'].'</p>
-                                <p>Rp. '.number_format($data['harga'], 0, ',', '.').',00</p>
-                            </div>
-                            <div class="book-actions">
-                                <button class="btn btn-success">Update</button>
-                                <button class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                        ';
-                    }
-                }
-                ?>
-            </div>
-
             <!-- Tombol Tambah Buku -->
             <div class="add-book">
                 <button type="button" onclick="window.location.href='form_entri.php'">+ Add Data Buku</button>
             </div>
         </div>
     </main>
+
+    <!-- Daftar Buku -->
+    <div class="book-list">
+        <?php
+        // Ambil data dari database
+        $query = "SELECT * FROM books";
+        $result = mysqli_query($conn, $query);
+
+        if (!$result) {
+            echo "Error: " . mysqli_error($conn);
+        } else {
+            while ($data = mysqli_fetch_assoc($result)) {
+                // pastikan price adalah float
+                $price = (float)$data['price'];
+                echo '
+                <div class="book-item">
+                    <img src="'.$data['imageUrl'].'" alt="Book Cover">
+                    <div class="book-info">
+                        <h5>'.$data['title'].'</h5>
+                        <p>Rp. '.number_format($price, 0, ',', '.').',00</p>
+                        <p>Rating: '.$data['rating'].'/5</p>
+                        <p>'.$data['synopsis'].'</p>
+                    </div>
+                    <div class="book-actions">
+                        <button class="btn btn-success">Update</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+                ';
+            }
+        }
+        ?>
+    </div>
 
     <!-- Footer -->
     <footer class="footer mt-auto bg-white shadow py-4">
