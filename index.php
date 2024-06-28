@@ -1,8 +1,6 @@
 <?php
 // panggil file "db_connect.php" untuk koneksi ke database
 require_once "connection/db_connect.php";
-// panggil file "fungsi_tanggal_indo.php" untuk membuat format tanggal indonesia
-// require_once "helper/fungsi_tanggal_indo.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +10,7 @@ require_once "connection/db_connect.php";
     <!-- Meta tag yang diperlukan -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Aplikasi CRUD ">
+    <meta name="description" content="WEB BOOKSTORE">
     <meta name="author" content="">
 
     <!-- Judul -->
@@ -40,27 +38,33 @@ require_once "connection/db_connect.php";
             font-family: 'Poppins', sans-serif;
             background-color: #f5f5f5;
         }
+
         .navbar {
             background-color: #4466f2;
         }
+
         .navbar-brand {
             display: flex;
             align-items: center;
         }
+
         .navbar-brand i {
             margin-right: 10px;
         }
+
         .search-bar {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
+
         .search-bar input {
             width: 50%;
             padding: 10px;
             border-radius: 20px;
             border: 1px solid #ccc;
         }
+
         .search-bar button {
             background-color: #4466f2;
             color: white;
@@ -69,9 +73,11 @@ require_once "connection/db_connect.php";
             margin-left: 10px;
             border-radius: 20px;
         }
+
         .book-list {
             margin-top: 20px;
         }
+
         .book-item {
             display: flex;
             align-items: center;
@@ -81,22 +87,27 @@ require_once "connection/db_connect.php";
             margin-bottom: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .book-item img {
             width: 50px;
             height: 70px;
             margin-right: 20px;
         }
+
         .book-info {
             flex-grow: 1;
         }
+
         .book-actions button {
             margin-left: 10px;
         }
+
         .add-book {
             display: flex;
             justify-content: flex-end;
             margin-top: 20px;
         }
+
         .add-book button {
             background-color: #4466f2;
             color: white;
@@ -115,67 +126,52 @@ require_once "connection/db_connect.php";
             <div class="container">
                 <span class="navbar-brand text-white">
                     <i class="fa-solid fa-laptop-code me-2"></i>
-                    Aplikasi CRUD
+                    WEB BOOKSTORE TINFC 2021
                 </span>
             </div>
         </nav>
     </header>
 
-    <!-- Konten Utama -->
+    <!-- Main Content -->
     <main class="flex-shrink-0">
         <div class="container pt-5">
-            <!-- Bilah Pencarian -->
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button type="button">Search</button>
-            </div>
-
-            <!-- Tombol Tambah Buku -->
-            <div class="add-book">
-                <button type="button" onclick="window.location.href='form_entri.php'">+ Add Data Buku</button>
-            </div>
+            <?php
+            // pemanggilan file konten sesuai "halaman" yang dipilih
+            // jika tidak ada halaman yang dipilih atau halaman yang dipilih "data"
+            if (empty($_GET["halaman"]) || $_GET['halaman'] == 'data') {
+                // panggil file tampil data
+                include "tampil_data.php";
+            }
+            // jika halaman yang dipilih "entri"
+            elseif ($_GET['halaman'] == 'entri') {
+                // panggil file form entri
+                include "form_entri.php";
+            }
+            // jika halaman yang dipilih "ubah"
+            elseif ($_GET['halaman'] == 'ubah') {
+                // panggil file form ubah
+                include "form_ubah.php";
+            }
+            // jika halaman yang dipilih "detail"
+            elseif ($_GET['halaman'] == 'detail') {
+                // panggil file tampil detail
+                include "tampil_detail.php";
+            }
+            // jika halaman yang dipilih "pencarian"
+            elseif ($_GET['halaman'] == 'pencarian') {
+                // panggil file tampil pencarian
+                include "tampil_pencarian.php";
+            }
+            ?>
         </div>
     </main>
-
-    <!-- Daftar Buku -->
-    <div class="book-list">
-        <?php
-        // Ambil data dari database
-        $query = "SELECT * FROM books";
-        $result = mysqli_query($conn, $query);
-
-        if (!$result) {
-            echo "Error: " . mysqli_error($conn);
-        } else {
-            while ($data = mysqli_fetch_assoc($result)) {
-                // pastikan price adalah float
-                $price = (float)$data['price'];
-                echo '
-                <div class="book-item">
-                    <img src="'.$data['imageUrl'].'" alt="Book Cover">
-                    <div class="book-info">
-                        <h5>'.$data['title'].'</h5>
-                        <p>Rp. '.number_format($price, 0, ',', '.').',00</p>
-                        <p>Rating: '.$data['rating'].'/5</p>
-                        <p>'.$data['synopsis'].'</p>
-                    </div>
-                    <div class="book-actions">
-                        <button class="btn btn-success">Update</button>
-                        <button class="btn btn-danger">Delete</button>
-                    </div>
-                </div>
-                ';
-            }
-        }
-        ?>
-    </div>
 
     <!-- Footer -->
     <footer class="footer mt-auto bg-white shadow py-4">
         <div class="container">
             <!-- Hak Cipta -->
             <div class="copyright text-center mb-2 mb-md-0">
-                &copy; 2023 - <a href="Uniku" target="_blank" class="text-brand text-decoration-none">Uniku</a>. All rights reserved.
+                &copy; 2024 - <a href="Uniku" target="_blank" class="text-brand text-decoration-none">from Universitas Kuningan</a>. All rights reserved.
             </div>
         </div>
     </footer>
@@ -190,6 +186,13 @@ require_once "connection/db_connect.php";
     <!-- Skrip Kustom -->
     <script src="assets/js/flatpickr.js"></script>
     <script src="assets/js/form-validation.js"></script>
+    <script>
+        function confirmDelete(id, title) {
+            if (confirm(`Are you sure you want to delete '${title}'?`)) {
+                window.location.href = `delete.php?id=${id}`;
+            }
+        }
+    </script>
 </body>
 
 </html>

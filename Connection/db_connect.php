@@ -13,14 +13,12 @@ if ($conn->connect_error) {
 
 <?php
 $host = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'db_bookstore';
+$db = 'db_bookstore';
+$user = 'root';
+$pass = '';
 
-// Membuat koneksi ke database
-$mysqli = new mysqli($host, $username, $password, $database);
+$mysqli = new mysqli($host, $user, $pass, $db);
 
-// Cek koneksi
 if ($mysqli->connect_error) {
     die('Koneksi gagal: ' . $mysqli->connect_error);
 }
