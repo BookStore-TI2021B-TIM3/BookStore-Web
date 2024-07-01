@@ -1,11 +1,5 @@
-<?php
-// panggil file "db_connect.php" untuk koneksi ke database
-require_once "connection/db_connect.php";
-?>
-
 <!DOCTYPE html>
-<html lang="en" class="h-100">
-
+<html lang="en">
 <head>
     <!-- Meta tag yang diperlukan -->
     <meta charset="utf-8">
@@ -14,7 +8,7 @@ require_once "connection/db_connect.php";
     <meta name="author" content="">
 
     <!-- Judul -->
-    <title>Web BookStore</title>
+    <title>Dashboard - Web BookStore</title>
 
     <!-- Ikon Favicon -->
     <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
@@ -41,6 +35,7 @@ require_once "connection/db_connect.php";
 
         .navbar {
             background-color: #4466f2;
+            margin-bottom: 20px; /* Margin-bottom for spacing below navbar */
         }
 
         .navbar-brand {
@@ -52,68 +47,36 @@ require_once "connection/db_connect.php";
             margin-right: 10px;
         }
 
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
+        .content-wrapper {
+            margin-top: 80px; /* Margin-top for spacing between header and content */
+            margin-bottom: 20px; /* Margin-bottom for spacing below content */
         }
 
-        .search-bar input {
-            width: 50%;
-            padding: 10px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
+        .footer-wrapper {
+            margin-top: 20px; /* Margin-top for spacing above footer */
+            margin-bottom: 20px; /* Margin-bottom for spacing below footer */
         }
 
-        .search-bar button {
-            background-color: #4466f2;
-            color: white;
+        .card {
             border: none;
-            padding: 10px 20px;
-            margin-left: 10px;
-            border-radius: 20px;
-        }
-
-        .book-list {
-            margin-top: 20px;
-        }
-
-        .book-item {
-            display: flex;
-            align-items: center;
-            background-color: white;
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
         }
 
-        .book-item img {
-            width: 50px;
-            height: 70px;
-            margin-right: 20px;
+        .card:hover {
+            transform: translateY(-10px);
         }
 
-        .book-info {
-            flex-grow: 1;
+        .card-icon {
+            font-size: 2rem;
+            color: #4466f2;
         }
 
-        .book-actions button {
-            margin-left: 10px;
-        }
-
-        .add-book {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-
-        .add-book button {
-            background-color: #4466f2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -132,67 +95,58 @@ require_once "connection/db_connect.php";
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-shrink-0">
-        <div class="container pt-5">
-            <?php
-            // pemanggilan file konten sesuai "halaman" yang dipilih
-            // jika tidak ada halaman yang dipilih atau halaman yang dipilih "data"
-            if (empty($_GET["halaman"]) || $_GET['halaman'] == 'data') {
-                // panggil file tampil data
-                include "tampil_data.php";
-            }
-            // jika halaman yang dipilih "entri"
-            elseif ($_GET['halaman'] == 'entri') {
-                // panggil file form entri
-                include "form_entri.php";
-            }
-            // jika halaman yang dipilih "ubah"
-            elseif ($_GET['halaman'] == 'ubah') {
-                // panggil file form ubah
-                include "form_ubah.php";
-            }
-            // jika halaman yang dipilih "detail"
-            elseif ($_GET['halaman'] == 'detail') {
-                // panggil file tampil detail
-                include "tampil_detail.php";
-            }
-            // jika halaman yang dipilih "pencarian"
-            elseif ($_GET['halaman'] == 'pencarian') {
-                // panggil file tampil pencarian
-                include "tampil_pencarian.php";
-            }
-            ?>
+    <!-- Main content -->
+    <main class="content-wrapper container mt-5">
+        <div class="row">
+            <!-- Kelola Buku Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fa-solid fa-book card-icon"></i>
+                        <h5 class="card-title">Kelola Buku</h5>
+                        <a href="buku.php" class="btn btn-primary">Lihat Buku</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kelola Penjualan Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fa-solid fa-dollar-sign card-icon"></i>
+                        <h5 class="card-title">Kelola Penjualan</h5>
+                        <a href="tampil_order.php" class="btn btn-primary">Lihat Penjualan</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kelola Pengguna Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fa-solid fa-users card-icon"></i>
+                        <h5 class="card-title">Kelola Pengguna</h5>
+                        <a href="tampil_users.php" class="btn btn-primary">Lihat Pengguna</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer mt-auto bg-white shadow py-4">
-        <div class="container">
-            <!-- Hak Cipta -->
-            <div class="copyright text-center mb-2 mb-md-0">
-                &copy; 2024 - <a href="Uniku" target="_blank" class="text-brand text-decoration-none">from Universitas Kuningan</a>. All rights reserved.
+    <div class="footer-wrapper">
+        <!-- Footer -->
+        <footer class="footer mt-auto bg-white shadow py-4">
+            <div class="container">
+                <!-- Hak Cipta -->
+                <div class="copyright text-center mb-2 mb-md-0">
+                    &copy; 2024 - <a href="Uniku" target="_blank" class="text-brand text-decoration-none">from Universitas Kuningan</a>. All rights reserved.
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-
-    <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js" integrity="sha256-AkQap91tDcS4YyQaZY2VV34UhSCxu2bDEIgXXXuf5Hg=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/id.js" integrity="sha256-cvHCpHmt9EqKfsBeDHOujIlR5wZ8Wy3s90da1L3sGkc=" crossorigin="anonymous"></script>
-
-    <!-- Skrip Kustom -->
-    <script src="assets/js/flatpickr.js"></script>
-    <script src="assets/js/form-validation.js"></script>
-    <script>
-        function confirmDelete(id, title) {
-            if (confirm(`Are you sure you want to delete '${title}'?`)) {
-                window.location.href = `delete.php?id=${id}`;
-            }
-        }
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
 </body>
-
 </html>
