@@ -16,8 +16,6 @@ require_once "connection/db_connect.php";
     <!-- Judul -->
     <title>Web BookStore</title>
 
-    <!-- Ikon Favicon -->
-    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -128,6 +126,9 @@ require_once "connection/db_connect.php";
                     <i class="fa-solid fa-laptop-code me-2"></i>
                     WEB BOOKSTORE TINFC 2021
                 </span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
         </nav>
     </header>
@@ -161,6 +162,11 @@ require_once "connection/db_connect.php";
             elseif ($_GET['halaman'] == 'pencarian') {
                 // panggil file tampil pencarian
                 include "tampil_pencarian.php";
+            }
+            // jika halaman yang dipilih "pembeli"
+            elseif ($_GET['halaman'] == 'pembeli') {
+                // panggil file tampil pembeli
+                include "tampil_pembeli.php";
             }
             ?>
         </div>

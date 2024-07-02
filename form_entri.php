@@ -132,11 +132,9 @@
         </nav>
     </header>
 
-
     <div class="d-flex flex-column flex-lg-row mt-5 mb-4">
         <!-- judul halaman -->
         <div class="flex-grow-1 d-flex align-items-center">
-            <i class="fa-regular fa-book icon-title"></i>
             <h3>Data Buku</h3>
         </div>
         <!-- breadcrumbs -->
@@ -162,6 +160,12 @@
             <div class="row">
                 <div class="col-xl-6">
                     <div class="mb-3">
+                        <label class="form-label">Penulis <span class="text-danger">*</span></label>
+                        <input type="text" name="author" class="form-control" autocomplete="off" required>
+                        <div class="invalid-feedback">Nama penulis tidak boleh kosong.</div>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Judul Buku <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" autocomplete="off" required>
                         <div class="invalid-feedback">Judul buku tidak boleh kosong.</div>
@@ -170,8 +174,7 @@
                     <div class="mb-3">
                         <label class="form-label">Harga <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <span class="input-group-text">Rp.</span>
-                            <input type="number" name="price" class="form-control" autocomplete="off" required>
+                            <input type="text" name="price" class="form-control" autocomplete="off" required>
                         </div>
                         <div class="invalid-feedback">Harga tidak boleh kosong.</div>
                     </div>

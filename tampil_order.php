@@ -254,12 +254,13 @@ $query = $conn->query("SELECT * FROM orders ORDER BY id DESC");
                             <td><?php echo $row['arrival']; ?></td>
                             <td>
                                 <div class="d-flex">
-                                    <form action="update_order.php" method="POST">
+                                    <form action="update_pembeli.php" method="POST">
                                         <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="edit_order" class="btn btn-outline-primary btn-sm rounded-4 me-2">
-                                            <i class="fa-solid fa-pen-to-square me-1"></i>
-                                        </button>
-                                    </form>
+                                         <button type="submit" name="edit_order" class="btn btn-outline-primary btn-sm rounded-4 me-2">
+                                          <i class="fa-solid fa-pen-to-square me-1"></i>Edit
+                                         </button>
+                                        </form>
+
                                     <form action="" method="POST">
                                         <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="delete_order" class="btn btn-outline-danger btn-sm rounded-4">

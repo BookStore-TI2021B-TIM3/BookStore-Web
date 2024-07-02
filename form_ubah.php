@@ -73,7 +73,6 @@ if (isset($_GET['id'])) {
     <main class="content-container container">
         <div class="d-flex flex-column flex-lg-row mt-5 mb-4">
             <div class="flex-grow-1 d-flex align-items-center">
-                <i class="fa-regular fa-book icon-title"></i>
                 <h3>Ubah Buku</h3>
             </div>
             <div class="ms-5 ms-lg-0 pt-lg-2">
@@ -93,6 +92,12 @@ if (isset($_GET['id'])) {
             </div>
             <form action="proses_ubah.php" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <input type="hidden" name="id" value="<?php echo isset($data['id']) ? $data['id'] : ''; ?>">
+
+                <div class="mb-3">
+                    <label class="form-label">Penulis <span class="text-danger">*</span></label>
+                    <input type="text" name="author" class="form-control" value="<?php echo isset($data['author']) ? $data['author'] : ''; ?>" required>
+                    <div class="invalid-feedback">Penulis tidak boleh kosong.</div>
+                </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Judul Buku <span class="text-danger">*</span></label>
@@ -102,7 +107,7 @@ if (isset($_GET['id'])) {
 
                 <div class="mb-3">
                     <label class="form-label">Harga <span class="text-danger">*</span></label>
-                    <input type="number" name="price" class="form-control" value="<?php echo isset($data['price']) ? $data['price'] : ''; ?>" required>
+                    <input type="text" name="price" class="form-control" value="<?php echo isset($data['price']) ? $data['price'] : ''; ?>" required>
                     <div class="invalid-feedback">Harga tidak boleh kosong.</div>
                 </div>
 

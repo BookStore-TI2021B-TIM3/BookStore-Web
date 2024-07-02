@@ -1,7 +1,6 @@
 <div class="d-flex flex-column flex-lg-row mt-5 mb-4">
     <!-- judul halaman -->
     <div class="flex-grow-1 d-flex align-items-center">
-        <i class="fa-regular fa-book icon-title"></i>
         <h3>Books</h3>
     </div>
     <!-- breadcrumbs -->
@@ -39,7 +38,7 @@ if (isset($_GET['id'])) {
     <div class="d-flex flex-column flex-xl-row">
         <div class="flex-shrink-0 text-center mb-5 mb-xl-0">
             <div class="foto-profil-detail">
-                <img src="images/<?php echo $data['imageUrl']; ?>" class="border border-2 img-fluid rounded-4 shadow" alt="Cover Buku" width="240" height="240">
+                <img src="assets/img/<?php echo $data['imageUrl']; ?>" class="border border-2 img-fluid rounded-4 shadow" alt="Cover Buku" width="240" height="240">
             </div>
         </div>
         <div class="flex-grow-1 text-muted fw-light ms-xl-5">
@@ -54,6 +53,11 @@ if (isset($_GET['id'])) {
                         <td>Judul</td>
                         <td>:</td>
                         <td><?php echo $data['title']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Penulis</td>
+                        <td>:</td>
+                        <td><?php echo $data['author']; ?></td>
                     </tr>
                     <tr>
                         <td>Harga</td>

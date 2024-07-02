@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
     // Jika proses delete berhasil
     if ($delete) {
         // Alihkan ke halaman index dan tampilkan pesan berhasil hapus data
-        header('location: index.php?pesan=3');
+        header('location: buku.php?pesan=3');
     }
 }
 ?>
