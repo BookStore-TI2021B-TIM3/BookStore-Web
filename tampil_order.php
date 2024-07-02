@@ -1,17 +1,8 @@
 <?php
-// Koneksi ke database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "db_bookstore";
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Include database connection
+include 'Connection/db_connect.php';
 
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
-// Update status order jika form dikirimkan
+// Update status order if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     $order_id = $_POST['order_id'];
     $status = $_POST['status'];
@@ -30,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     }
 }
 
-// Insert data order
+// Insert new order if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save_order'])) {
     $title = $_POST['title'];
     $username = $_POST['username'];
@@ -55,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save_order'])) {
     }
 }
 
-// Delete data order
+// Delete order if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_order'])) {
     $order_id = $_POST['order_id'];
 
@@ -72,8 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_order'])) {
             </div>';
     }
 }
-?>
 
+// Fetch data from the orders table
+$query = $conn->query("SELECT * FROM orders ORDER BY id DESC");
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -210,105 +204,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_order'])) {
             </div>
         </nav>
     </header>
-    <!-- Konten -->
+
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="d-flex flex-column flex-lg-row mt-5 mb-4">
+                <div class="flex-grow-1 d-flex align-items-center">
+                    <i class="fa-regular fa-orders icon-title"></i>
+                    <h3>Orders</h3>
+                </div>
+                <div class="ms-5 ms-lg-0 pt-lg-2">
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php" class="text-dark text-decoration-none"><i class="fa-solid fa-house"></i></a></li>
+                            <li class="breadcrumb-item" aria-current="page">Orders</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+    <!-- Content -->
     <div class="container mt-4 content-wrapper">
         <div class="table-responsive shadow p-3 mt-4 mb-5 rounded-4 border-0 bg-white">
             <table class="table table-striped align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Judul Buku</th>
-                        <th>Nama Pembeli</th>
-                        <th>No. Telp</th>
-                        <th>Harga</th>
-                        <th>Tanggal Order</th>
-                        <th>Alamat</th>
-                        <th>Status</th>
-                        <th>Estimasi Tiba</th>
-                        <th>Aksi</th>
+                        <th class="border-0">ID</th>
+                        <th class="border-0">Title</th>
+                        <th class="border-0">Username</th>
+                        <th class="border-0">Phone</th>
+                        <th class="border-0">Price</th>
+                        <th class="border-0">Date</th>
+                        <th class="border-0">Address</th>
+                        <th class="border-0">Status</th>
+                        <th class="border-0">Arrival</th>
+                        <th class="border-0">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $sql = "SELECT * FROM orders";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $row['title'] . "</td>";
-                            echo "<td>" . $row['username'] . "</td>";
-                            echo "<td>" . $row['phone'] . "</td>";
-                            echo "<td>" . $row['price'] . "</td>";
-                            echo "<td>" . $row['date'] . "</td>";
-                            echo "<td>" . $row['address'] . "</td>";
-                            echo "<td>" . $row['status'] . "</td>";
-                            echo "<td>" . $row['arrival'] . "</td>";
-                            echo "<td>
-                                    <button type='button' class='btn btn-primary btn-sm me-2' data-bs-toggle='modal' data-bs-target='#updateOrderModal" . $row['id'] . "'><i class='fa-solid fa-pencil me-2'></i>Edit</button>
-                                    <button type='button' class='btn btn-danger btn-sm' data-bs-toggle='modal' data-bs-target='#deleteOrderModal" . $row['id'] . "'><i class='fa-solid fa-trash me-2'></i>Hapus</button>
-                                  </td>";
-                            echo "</tr>";
-                            ?>
-                            <!-- Modal Update Order -->
-                            <div class="modal fade" id="updateOrderModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="updateOrderModalLabel<?php echo $row['id']; ?>" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action="" method="POST">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="updateOrderModalLabel<?php echo $row['id']; ?>">Update Order</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
-                                                <div class="mb-3">
-                                                    <label for="status" class="form-label">Status</label>
-                                                    <select class="form-select" id="status" name="status">
-                                                        <option value="Pending" <?php echo ($row['status'] == 'Pending') ? 'selected' : ''; ?>>Pending</option>
-                                                        <option value="Dikirim" <?php echo ($row['status'] == 'Dikirim') ? 'selected' : ''; ?>>Dikirim</option>
-                                                        <option value="Selesai" <?php echo ($row['status'] == 'Selesai') ? 'selected' : ''; ?>>Selesai</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                <button type="submit" name="update_status" class="btn btn-primary">Simpan</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                    <?php while ($row = $query->fetch_assoc()) : ?>
+                        <tr>
+                            <td><?php echo $row['id']; ?></td>
+                            <td><?php echo $row['title']; ?></td>
+                            <td><?php echo $row['username']; ?></td>
+                            <td><?php echo $row['phone']; ?></td>
+                            <td><?php echo $row['price']; ?></td>
+                            <td><?php echo $row['date']; ?></td>
+                            <td><?php echo $row['address']; ?></td>
+                            <td><?php echo $row['status']; ?></td>
+                            <td><?php echo $row['arrival']; ?></td>
+                            <td>
+                                <div class="d-flex">
+                                    <form action="update_order.php" method="POST">
+                                        <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="edit_order" class="btn btn-outline-primary btn-sm rounded-4 me-2">
+                                            <i class="fa-solid fa-pen-to-square me-1"></i>
+                                        </button>
+                                    </form>
+                                    <form action="" method="POST">
+                                        <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="delete_order" class="btn btn-outline-danger btn-sm rounded-4">
+                                            <i class="fa-solid fa-trash-can me-1"></i>
+                                        </button>
+                                    </form>
                                 </div>
-                            </div>
-
-                            <!-- Modal Delete Order -->
-                            <div class="modal fade" id="deleteOrderModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="deleteOrderModalLabel<?php echo $row['id']; ?>" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action="" method="POST">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteOrderModalLabel<?php echo $row['id']; ?>">Hapus Order</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
-                                                <p>Apakah Anda yakin ingin menghapus order ini?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                <button type="submit" name="delete_order" class="btn btn-danger">Hapus</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                    } else {
-                        echo "<tr><td colspan='9' class='text-center'>Tidak ada data order.</td></tr>";
-                    }
-                    ?>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
     </div>
+
 
     <div class="footer-wrapper">
         <!-- Footer -->
@@ -322,15 +288,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_order'])) {
         </footer>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzOgBH3jqChS2Em7lO4he4l5Yy9E2gQ8Y5B1QWO8/Enj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93qGtdPme6B/s+r3wDd5yMa5eMo0D1hENt8KjpFf6m9g3mrK6cw5NRJ24eG5eG" crossorigin="anonymous"></script>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqeqfXM98Lx16L2vnM5Q5vYtnwHl8LLDiubz3aAhU78Y08TStSLBf4aYZiQ==" crossorigin="anonymous"></script>
+
     <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js" integrity="sha256-iTnRwBUJ6+MAlfkaLFMlJm3ZjNCDK4M8NSpF+cLBInI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js" integrity="sha256-I6S9R76yt7vF2wwyML7ShlNh2gCkMnLKk9gy8/a48Lg=" crossorigin="anonymous"></script>
     <script>
-        // Inisialisasi Flatpickr untuk input tanggal
-        flatpickr(".datepicker", {
-            dateFormat: "Y-m-d"
+        flatpickr("input[type=date]", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
         });
     </script>
 </body>

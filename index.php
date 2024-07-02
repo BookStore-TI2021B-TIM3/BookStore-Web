@@ -31,6 +31,9 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .navbar {
@@ -48,8 +51,10 @@
         }
 
         .content-wrapper {
-            margin-top: 80px; /* Margin-top for spacing between header and content */
-            margin-bottom: 20px; /* Margin-bottom for spacing below content */
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .footer-wrapper {
@@ -96,37 +101,39 @@
     </header>
 
     <!-- Main content -->
-    <main class="content-wrapper container mt-5">
-        <div class="row">
-            <!-- Kelola Buku Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="fa-solid fa-book card-icon"></i>
-                        <h5 class="card-title">Kelola Buku</h5>
-                        <a href="buku.php" class="btn btn-primary">Lihat Buku</a>
+    <main class="content-wrapper">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <!-- Kelola Buku Card -->
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa-solid fa-book card-icon"></i>
+                            <h5 class="card-title">Kelola Buku</h5>
+                            <a href="buku.php" class="btn btn-primary">Lihat Buku</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Kelola Penjualan Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="fa-solid fa-dollar-sign card-icon"></i>
-                        <h5 class="card-title">Kelola Penjualan</h5>
-                        <a href="tampil_order.php" class="btn btn-primary">Lihat Penjualan</a>
+                <!-- Kelola Penjualan Card -->
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa-solid fa-dollar-sign card-icon"></i>
+                            <h5 class="card-title">Kelola Penjualan</h5>
+                            <a href="tampil_order.php" class="btn btn-primary">Lihat Penjualan</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Kelola Pengguna Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="fa-solid fa-users card-icon"></i>
-                        <h5 class="card-title">Kelola Pengguna</h5>
-                        <a href="tampil_users.php" class="btn btn-primary">Lihat Pengguna</a>
+                <!-- Kelola Pengguna Card -->
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fa-solid fa-users card-icon"></i>
+                            <h5 class="card-title">Kelola Pengguna</h5>
+                            <a href="tampil_users.php" class="btn btn-primary">Lihat Pengguna</a>
+                        </div>
                     </div>
                 </div>
             </div>
