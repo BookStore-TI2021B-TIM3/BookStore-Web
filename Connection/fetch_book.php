@@ -1,7 +1,7 @@
 <?php
 include 'db_connect.php';
 
-$sql = "SELECT * FROM books";
+$sql = "SELECT id, author, title, price, rating, synopsis, imageUrl FROM books";
 $result = $conn->query($sql);
 
 $books = array();

@@ -1,159 +1,115 @@
+<?php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Koneksi ke database, gantilah dengan informasi koneksi sesuai dengan database Anda
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "db_bookstore";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Periksa koneksi
+    if ($conn->connect_error) {
+        die("Koneksi gagal: " . $conn->connect_error);
+    }
+
+    // Ambil data yang dikirimkan melalui form
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Query untuk memeriksa apakah user ada di database
+    $sql = "SELECT * FROM admin WHERE username='$username' AND password='$password'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // User ditemukan, set session dan redirect ke halaman selanjutnya
+        $_SESSION['username'] = $username;
+        header("Location: menu.php");
+    } else {
+        // Jika user tidak ditemukan, tampilkan pesan error
+        $login_error = "Username atau Password salah !";
+    }
+
+    $conn->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tag yang diperlukan -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="WEB BOOKSTORE">
-    <meta name="author" content="">
-
-    <!-- Judul -->
-    <title>Dashboard - Web BookStore</title>
-
-    <!-- Ikon Favicon -->
-    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css" integrity="sha256-RXPAyxHVyMLxb0TYCM2OW5R4GWkcDe02jdYgyZp41OU=" crossorigin="anonymous">
-
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
-
-    <!-- CSS Kustom -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f4f6f9;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            background-color: #4466f2;
-            margin-bottom: 20px; /* Margin-bottom for spacing below navbar */
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar-brand i {
-            margin-right: 10px;
-        }
-
-        .content-wrapper {
-            flex: 1;
-            display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
         }
-
-        .footer-wrapper {
-            margin-top: 20px; /* Margin-top for spacing above footer */
-            margin-bottom: 20px; /* Margin-bottom for spacing below footer */
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .card {
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            width: 100%;
+        }
+        .btn-login {
+            background-color: #007bff;
+            color: #fff;
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
         }
-
-        .card:hover {
-            transform: translateY(-10px);
+        .btn-login:hover {
+            background-color: #0056b3;
         }
-
-        .card-icon {
-            font-size: 2rem;
-            color: #4466f2;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 500;
+        .error-message {
+            color: red;
             margin-top: 10px;
+            text-align: center;
         }
     </style>
 </head>
-
-<body class="d-flex flex-column h-100">
-    <!-- Header -->
-    <header>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg fixed-top shadow">
-            <div class="container">
-                <span class="navbar-brand text-white">
-                    <i class="fa-solid fa-laptop-code me-2"></i>
-                    WEB BOOKSTORE TINFC 2021
-                </span>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
             </div>
-        </nav>
-    </header>
-
-    <!-- Main content -->
-    <main class="content-wrapper">
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <!-- Kelola Buku Card -->
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fa-solid fa-book card-icon"></i>
-                            <h5 class="card-title">Kelola Buku</h5>
-                            <a href="buku.php" class="btn btn-primary">Lihat Buku</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kelola Penjualan Card -->
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fa-solid fa-dollar-sign card-icon"></i>
-                            <h5 class="card-title">Kelola Penjualan</h5>
-                            <a href="tampil_order.php" class="btn btn-primary">Lihat Penjualan</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kelola Pengguna Card -->
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fa-solid fa-users card-icon"></i>
-                            <h5 class="card-title">Kelola Pengguna</h5>
-                            <a href="tampil_users.php" class="btn btn-primary">Lihat Pengguna</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
             </div>
-        </div>
-    </main>
-
-    <div class="footer-wrapper">
-        <!-- Footer -->
-        <footer class="footer mt-auto bg-white shadow py-4">
-            <div class="container">
-                <!-- Hak Cipta -->
-                <div class="copyright text-center mb-2 mb-md-0">
-                    &copy; 2024 - <a href="Uniku" target="_blank" class="text-brand text-decoration-none">from Universitas Kuningan</a>. All rights reserved.
-                </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-login">
             </div>
-        </footer>
+            <?php if (isset($login_error)) { ?>
+                <div class="error-message"><?php echo $login_error; ?></div>
+            <?php } ?>
+        </form>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
 </body>
 </html>

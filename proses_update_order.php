@@ -1,37 +1,32 @@
 <?php
 include "connection/db_connect.php"; 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $id_order = $_POST['id'];
-    $title = $_POST['title'];
-    $status = $_POST['status'];
-    $username = $_POST['username'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
-    $date = $_POST['date'];
-    $arrival = $_POST['arrival']; 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize input data
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+    $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+    $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_STRING);
+    $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+    $arrival = filter_input(INPUT_POST, 'arrival', FILTER_SANITIZE_STRING);
 
-    // Update query
-    $query = "UPDATE orders SET
-              title='$title', 
-              status='$status', 
-              username='$username', 
-              phone='$phone', 
-              address='$address', 
-              date='$date', 
-              arrival='$arrival'
-              WHERE id='$id_order'";
+    // Prepare and bind parameters for the update query
+    $query = $mysqli->prepare("UPDATE orders SET title=?, status=?, username=?, phone=?, address=?, date=?, arrival=? WHERE id=?");
+    $query->bind_param("sssssssi", $title, $status, $username, $phone, $address, $date, $arrival, $id);
 
-    if ($mysqli->query($query) === TRUE) {
-        // Redirect to a success page or back to the form page
+    if ($query->execute()) {
+        // Redirect to the orders page after successful update
         header("Location: tampil_order.php");
         exit();
     } else {
-        echo "Error updating order: " . $mysqli->error;
+        // Handle error
+        echo "Error updating order: " . $query->error;
     }
+
+    $query->close();
 }
 
-// Close database connection
 $mysqli->close();
 ?>

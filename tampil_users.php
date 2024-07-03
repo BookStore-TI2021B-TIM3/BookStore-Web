@@ -152,13 +152,12 @@ if ($conn->connect_error) {
         <div class="container">
             <div class="d-flex flex-column flex-lg-row mt-5 mb-4">
                 <div class="flex-grow-1 d-flex align-items-center">
-                    <i class="fa-regular fa-users icon-title"></i>
                     <h3>Users</h3>
                 </div>
                 <div class="ms-5 ms-lg-0 pt-lg-2">
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.php" class="text-dark text-decoration-none"><i class="fa-solid fa-house"></i></a></li>
+                            <li class="breadcrumb-item"><a href="menu.php" class="text-dark text-decoration-none"><i class="fa-solid fa-house"></i></a></li>
                             <li class="breadcrumb-item" aria-current="page">Users</li>
                         </ol>
                     </nav>

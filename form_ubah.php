@@ -78,8 +78,8 @@ if (isset($_GET['id'])) {
             <div class="ms-5 ms-lg-0 pt-lg-2">
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php" class="text-dark text-decoration-none"><i class="fa-solid fa-house"></i></a></li>
-                        <li class="breadcrumb-item"><a href="index.php" class="text-dark text-decoration-none">Buku</a></li>
+                        <li class="breadcrumb-item"><a href="menu.php" class="text-dark text-decoration-none"><i class="fa-solid fa-house"></i></a></li>
+                        <li class="breadcrumb-item"><a href="?halaman=data" class="text-dark text-decoration-none">Books</a></li>
                         <li class="breadcrumb-item" aria-current="page">Ubah</li>
                     </ol>
                 </nav>
@@ -139,7 +139,7 @@ if (isset($_GET['id'])) {
                 <div class="pt-4 pb-2 mt-5 border-top">
                     <div class="d-grid gap-3 d-sm-flex justify-content-md-start pt-1">
                         <input type="submit" name="simpan" value="Simpan" class="btn btn-primary rounded-pill py-2 px-4">
-                        <a href="index.php" class="btn btn-secondary rounded-pill py-2 px-4">Batal</a>
+                        <a href="buku.php" class="btn btn-secondary rounded-pill py-2 px-4">Batal</a>
                     </div>
                 </div>
             </form>

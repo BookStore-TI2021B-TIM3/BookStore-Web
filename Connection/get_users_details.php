@@ -8,7 +8,7 @@ $response = array('status' => 'error');
 if (isset($_GET['user_id'])) {
     $user_id = (int) $_GET['user_id']; 
 
-    $query = "SELECT username, email, password FROM users WHERE id = ?";
+    $query = "SELECT id, username, email, password, location, phone FROM users WHERE id = ?";
     $stmt = $conn->prepare($query);
     if ($stmt) {
         $stmt->bind_param('i', $user_id);
