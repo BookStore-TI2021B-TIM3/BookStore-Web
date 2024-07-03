@@ -1,22 +1,43 @@
 <?php
-include 'Connection/db_connect.php';
+// Include file koneksi ke database (db_connect.php)
+include 'db_connect.php';
 
-// Mengecek apakah parameter id telah diterima dari URL
-if (isset($_GET['id'])) {
-    $id_order = $_GET['id'];
+// Tentukan header untuk respons JSON
+header('Content-Type: application/json');
 
-    // Query untuk menghapus data order berdasarkan id
-    $delete_query = "DELETE FROM orders WHERE id = '$id_order'";
-    if ($conn->query($delete_query) === TRUE) {
-        // Redirect ke halaman utama setelah berhasil menghapus
-        header("Location: index.php?halaman=orders");
-        exit();
+// Inisialisasi respons awal
+$response = array('status' => 'error');
+
+// Pastikan metode yang digunakan adalah DELETE
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    // Ambil ID order dari query parameter
+    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+        $id = intval($_GET['id']);
+
+        // Persiapkan statement SQL untuk menghapus order berdasarkan ID
+        $stmt = $conn->prepare("DELETE FROM orders WHERE id = ?");
+        $stmt->bind_param('i', $id);
+
+        // Eksekusi statement SQL
+        if ($stmt->execute()) {
+            $response['status'] = 'success';
+            $response['message'] = 'Order canceled successfully';
+        } else {
+            $response['message'] = 'Failed to cancel order';
+        }
+
+        // Tutup statement
+        $stmt->close();
     } else {
-        echo "Error deleting order: " . $conn->error;
+        $response['message'] = 'Invalid or missing ID';
     }
 } else {
-    echo "ID order tidak ditemukan.";
+    $response['message'] = 'Invalid request method';
 }
 
+// Mengembalikan respons dalam bentuk JSON
+echo json_encode($response);
+
+// Tutup koneksi ke database
 $conn->close();
 ?>

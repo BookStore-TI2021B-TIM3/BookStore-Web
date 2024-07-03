@@ -1,7 +1,6 @@
 <div class="d-flex flex-column flex-lg-row mt-5 mb-4">
     <!-- judul halaman -->
     <div class="flex-grow-1 d-flex align-items-center">
-        <i class="fa-regular fa-book icon-title"></i>
         <h3>Books</h3>
     </div>
     <!-- breadcrumbs -->
@@ -65,7 +64,7 @@
                 <div class="p-2">
                     <div class="d-flex bg-white rounded-4 shadow-sm">
                         <div class="flex-shrink-0 p-3">
-                            <img src="images/<?php echo $data['imageUrl']; ?>" class="border border-2 img-fluid rounded-4" alt="Book Cover" width="100" height="100">
+                            <img src="assets/img/<?php echo $data['imageUrl']; ?>" class="border border-2 img-fluid rounded-4" alt="Book Cover" width="100" height="100">
                         </div>
                         <div class="p-4 flex-grow-1">
                             <h5><?php echo $data['id']; ?> - <?php echo $data['title']; ?></h5>
